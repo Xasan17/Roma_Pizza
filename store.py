@@ -7,7 +7,7 @@ import pyodbc
 urllib3.disable_warnings()
 
 # 🔐 Токен и URL
-token = "7230b187-1c18-8b4f-6520-568a88ed4c9d"
+token = "8063ebd3-dc30-1412-4660-aff906b8b6cd"
 url = "https://roma-pizza-co.iiko.it/resto/api/corporation/stores"
 params = {"key": token}
 
@@ -26,7 +26,6 @@ if response.ok:
             "name": store.findtext("name").strip() if store.findtext("name") else "",
             "type": store.findtext("type")
         })
-
     df = pd.DataFrame(stores)
     df = df[df["type"] == "STORE"]  # ❗ Сохраняем только магазины
 
