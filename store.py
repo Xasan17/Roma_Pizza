@@ -7,7 +7,7 @@ import pyodbc
 urllib3.disable_warnings()
 
 # 🔐 Токен и URL
-token = "8063ebd3-dc30-1412-4660-aff906b8b6cd"
+token = "6a757672-3b18-9174-704f-087b8407f560"
 url = "https://roma-pizza-co.iiko.it/resto/api/corporation/stores"
 params = {"key": token}
 

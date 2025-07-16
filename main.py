@@ -1,47 +1,112 @@
 import requests
-import xml.etree.ElementTree as ET
 import urllib3
+import pandas as pd
+import pyodbc
 
+# Отключаем предупреждения
 urllib3.disable_warnings()
 
-# === НАСТРОЙКИ ===
-token = "8063ebd3-dc30-1412-4660-aff906b8b6cd"
-correct_store_id = "BFDF7F94-1B37-4AC9-BA0E-568B562C6F0A"  # ✅ Реальный ID склада
-incorrect_store_id = "1239d270-1bbe-f64f-b7ea-5f00518ef508"  # ❌ Проблемный ID
+# 🔐 Токен авторизации
+token = "899827ad-1ad9-56f1-f780-7ae607d88f2c"
 
-# === ЗАГРУЗКА И ИЗМЕНЕНИЕ XML ===
-tree = ET.parse("invoice.xml")
-root = tree.getroot()
-
-# Заменим неправильный ID на правильный
-for elem in root.iter():
-    if elem.tag in ["store", "defaultStore"]:
-        if elem.text == incorrect_store_id:
-            elem.text = correct_store_id
-
-# Сохраняем исправленный XML
-tree.write("invoice_fixed.xml", encoding="utf-8", xml_declaration=True)
-
-# === ОТПРАВКА POST ЗАПРОСА В IIKO ===
-url = "https://roma-pizza-co.iiko.it/resto/api/documents/import/incomingInvoice"
+# 🌐 URL запроса
+url = "https://roma-pizza-co.iiko.it/resto/api/v2/entities/quickLabels/list"
 params = {
-    "key": token
+    "key": token,
+    "includeDeleted": "false"
 }
 
-# Загружаем изменённый XML-файл
-with open("invoice_fixed.xml", "rb") as f:
-    xml_data = f.read()
+# 📥 Получаем данные
+response = requests.get(url, params=params, verify=False)
 
-headers = {
-    "Content-Type": "application/xml"
-}
-
-response = requests.post(url, params=params, headers=headers, data=xml_data, verify=False)
-
-# === ОБРАБОТКА ОТВЕТА ===
 if response.ok:
-    print("✅ Запрос успешно отправлен")
-    print(response.text)
+    data = response.json()
+
+    # Распаковка вложенных "labels"
+    rows = []
+    for item in data:
+        menu_id = item.get("id")
+        depends_on_weekday = item.get("dependsOnWeekDay")
+        department_id = item.get("departmentId")
+        section_id = item.get("sectionId")
+        page_names = item.get("pageNames", [])
+
+        labels = item.get("labels", [])
+        for label in labels:
+            rows.append({
+                "menu_id": menu_id,
+                "dependsOnWeekDay": depends_on_weekday,
+                "departmentId": department_id,
+                "sectionId": section_id,
+                "page": label.get("page"),
+                "day": label.get("day"),
+                "x": label.get("x"),
+                "y": label.get("y"),
+                "entityId": label.get("entityId"),
+                "entityType": label.get("entityType"),
+                "page_name_0": page_names[0] if len(page_names) > 0 else None,
+                "page_name_1": page_names[1] if len(page_names) > 1 else None,
+                "page_name_2": page_names[2] if len(page_names) > 2 else None
+            })
+
+    df = pd.DataFrame(rows)
+    print(df.head())
+
+    # 🔌 Подключение к SQL Server
+    conn = pyodbc.connect(
+        'Driver={ODBC Driver 17 for SQL Server};'
+        'SERVER=TA_GEO_07\\SQLEXPRESS;'
+        'DATABASE=Roma_pizza;'
+        'Trusted_Connection=yes;'
+    )
+    cursor = conn.cursor()
+
+    # 🧹 Очистка старой таблицы
+    cursor.execute("""
+        IF OBJECT_ID('dbo.stagging_quicklabels_iiko', 'U') IS NOT NULL
+            DROP TABLE dbo.stagging_quicklabels_iiko
+    """)
+    conn.commit()
+
+    # 🧱 Создание новой таблицы
+    cursor.execute("""
+        CREATE TABLE dbo.stagging_quicklabels_iiko (
+            menu_id UNIQUEIDENTIFIER,
+            dependsOnWeekDay BIT,
+            departmentId UNIQUEIDENTIFIER,
+            sectionId UNIQUEIDENTIFIER NULL,
+            page INT,
+            day INT,
+            x INT,
+            y INT,
+            entityId UNIQUEIDENTIFIER,
+            entityType NVARCHAR(50),
+            page_name_0 NVARCHAR(100),
+            page_name_1 NVARCHAR(100),
+            page_name_2 NVARCHAR(100)
+        )
+    """)
+    conn.commit()
+
+    # 💾 Загрузка данных
+    for _, row in df.iterrows():
+        cursor.execute("""
+            INSERT INTO dbo.stagging_quicklabels_iiko (
+                menu_id, dependsOnWeekDay, departmentId, sectionId,
+                page, day, x, y,
+                entityId, entityType,
+                page_name_0, page_name_1, page_name_2
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, row.menu_id, row.dependsOnWeekDay, row.departmentId, row.sectionId,
+             row.page, row.day, row.x, row.y,
+             row.entityId, row.entityType,
+             row.page_name_0, row.page_name_1, row.page_name_2)
+
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    print("✅ Данные QuickLabels успешно загружены в SQL Server!")
+
 else:
-    print(f"❌ Ошибка {response.status_code}:")
-    print(response.text)
+    print(f"❌ Ошибка запроса: {response.status_code}\n{response.text}")
