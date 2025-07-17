@@ -5,12 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="25a4a24a-4475-42c6-b79a-7d225b8268d2" name="Changes" comment="второй коммит">
-      <change afterPath="$PROJECT_DIR$/accaunts.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/load_payment_types.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/priceCategories.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/store.py" beforeDir="false" afterPath="$PROJECT_DIR$/store.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SQLQuery1.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cashshifts_list.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/iiko_balance.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/iiko_products.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/iiko_stores.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/invoice.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/invoice_fixed.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/product_group.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prompt.docx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/suppliers_from_iiko.xlsx" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,35 +62,35 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "DefaultHtmlFileTemplate": "HTML File",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "Python.accaunts.executor": "Run",
-    "Python.balance_report.executor": "Run",
-    "Python.iiko_token_script.executor": "Run",
-    "Python.load_cash_shifts.executor": "Run",
-    "Python.load_payment_types.executor": "Run",
-    "Python.main.executor": "Run",
-    "Python.olap.executor": "Run",
-    "Python.priceCategories.executor": "Run",
-    "Python.product_categories.executor": "Run",
-    "Python.product_group.executor": "Run",
-    "Python.product_type.executor": "Run",
-    "Python.products.executor": "Run",
-    "Python.sha1.executor": "Run",
-    "Python.store.executor": "Run",
-    "Python.token.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Python.accaunts.executor&quot;: &quot;Run&quot;,
+    &quot;Python.balance_report.executor&quot;: &quot;Run&quot;,
+    &quot;Python.iiko_token_script.executor&quot;: &quot;Run&quot;,
+    &quot;Python.load_cash_shifts.executor&quot;: &quot;Run&quot;,
+    &quot;Python.load_payment_types.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;Python.olap.executor&quot;: &quot;Run&quot;,
+    &quot;Python.priceCategories.executor&quot;: &quot;Run&quot;,
+    &quot;Python.product_categories.executor&quot;: &quot;Run&quot;,
+    &quot;Python.product_group.executor&quot;: &quot;Run&quot;,
+    &quot;Python.product_type.executor&quot;: &quot;Run&quot;,
+    &quot;Python.products.executor&quot;: &quot;Run&quot;,
+    &quot;Python.sha1.executor&quot;: &quot;Run&quot;,
+    &quot;Python.store.executor&quot;: &quot;Run&quot;,
+    &quot;Python.token.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;
   },
-  "keyToStringList": {
-    "ChangesTree.GroupingKeys": [
-      "repository"
+  &quot;keyToStringList&quot;: {
+    &quot;ChangesTree.GroupingKeys&quot;: [
+      &quot;repository&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -133,7 +138,15 @@
       <option name="project" value="LOCAL" />
       <updated>1752496659029</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="второй коммит">
+      <option name="closed" value="true" />
+      <created>1752641178767</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1752641178767</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
