@@ -12,6 +12,34 @@ select * from stagging_quicklabels_iiko
 select * from stagging_table_iiko_balance
 select * from stagging_table_iiko_stores
 select * from stagging_accounts_iiko
+select * from stagging_table_iiko_attendance_types
+select * from stagging_table_iiko_employee_attendances
+select * from stagging_table_attendance  
+select * from stagging_table_iiko_employee_availability
+select * from stagging_table_iiko_employee_roles
+select * from stagging_table_iiko_employee_shifts
+select * from stagging_table_iiko_employee_salaries
+select * from stagging_table_iiko_employees
+select * from stagging_table_iiko_schedule_types
+select * from stagging_table_iiko_store_operations
+select * from stagging_table_iiko_store_report_presets
+select * from stagging_table_iiko_delivery_consolidated
+select * from stagging_table_iiko_couriers
+select * from stagging_table_iiko_order_cycle
+select * from stagging_table_iiko_half_hour --korish kere hatolik bervoti kotta periutda
+select * from stagging_table_iiko_delivery_regions
+select * from stagging_table_iiko_delivery_loyalty
+select * from stagging_table_iiko_balance_counteragents
+--select * into stagging_table_iiko_balance_counteragents_copy from stagging_table_iiko_balance_counteragents
+select * from stagging_table_iiko_balance_counteragents_copy
+select * from stagging_table_iiko_balance_stores
+select * from stagging_table_iiko_balance_stores_copy
+select * from staging_iiko_period_schedules
+select * from stagging_table_iiko_events
+select * from stagging_table_iiko_event_attributes
+select * from stagging_table_iiko_replications
+
+drop table stagging_table_iiko_store_operations
 
 select distinct name from stagging_table_iiko_products
 select * from stagging_table_iiko_stores
