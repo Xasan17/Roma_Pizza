@@ -1,45 +1,90 @@
 create database Roma_pizza
 use Roma_pizza;
-select * from stagging_table_iiko_products
-select * from stagging_table_iiko_product_groups
-select * from stagging_table_iiko_product_categories
-select * from stagging_table_iiko_product_type
-select * from iiko_cash_shifts_fact
-select * from stagging_table_iiko_payinout_types
-select * from stagging_table_iiko_payments_type
-select * from stagging_table_iiko_price_categories
-select * from stagging_quicklabels_iiko
-select * from stagging_table_iiko_balance
-select * from stagging_table_iiko_stores
 select * from stagging_accounts_iiko
 select * from stagging_table_iiko_attendance_types
-select * from stagging_table_iiko_employee_attendances
-select * from stagging_table_attendance  
+select * from stagging_table_attendance
+select storeId from stagging_table_iiko_balance_stores
+select * from stagging_table_iiko_delivery_consolidated
+select * from stagging_table_iiko_couriers
+select * from stagging_table_iiko_half_hour
+select * from stagging_table_iiko_delivery_loyalty
+
 select * from stagging_table_iiko_employee_availability
 select * from stagging_table_iiko_employee_roles
 select * from stagging_table_iiko_employee_shifts
 select * from stagging_table_iiko_employee_salaries
 select * from stagging_table_iiko_employees
-select * from stagging_table_iiko_schedule_types
-select * from stagging_table_iiko_store_operations
-select * from stagging_table_iiko_store_report_presets
-select * from stagging_table_iiko_delivery_consolidated
-select * from stagging_table_iiko_couriers
-select * from stagging_table_iiko_order_cycle
-select * from stagging_table_iiko_half_hour --korish kere hatolik bervoti kotta periutda
-select * from stagging_table_iiko_delivery_regions
-select * from stagging_table_iiko_delivery_loyalty
-select * from stagging_table_iiko_balance_counteragents
---select * into stagging_table_iiko_balance_counteragents_copy from stagging_table_iiko_balance_counteragents
-select * from stagging_table_iiko_balance_counteragents_copy
-select * from stagging_table_iiko_balance_stores
-select * from stagging_table_iiko_balance_stores_copy
-select * from staging_iiko_period_schedules
 select * from stagging_table_iiko_events
 select * from stagging_table_iiko_event_attributes
+select * from iiko_cash_shifts_fact
+select * from stagging_table_iiko_payments_type
+select * from stagging_table_iiko_price_categories
+select * from stagging_table_iiko_product_categories
+select * from stagging_table_iiko_product_groups
+select * from stagging_table_iiko_product_type
+select * from stagging_table_iiko_products
 select * from stagging_table_iiko_replications
+select * from stagging_table_iiko_balance_counteragents
+select * from stagging_table_iiko_schedule_types
+select * from stagging_table_iiko_stores
+select * from stagging_table_iiko_store_operations
+select * from stagging_table_iiko_store_report_presets
 
-drop table stagging_table_iiko_store_operations
+
+
+
+
+where date = '2025-07-29'
+
+
+
+select sum(amount),sum(sum)/1000000 as sum_x,s.name from stagging_table_iiko_balance_stores b
+join stagging_table_iiko_stores s on b.storeId = s.id
+join stagging_table_iiko_products p on p.id = b.productId
+where sum>0
+group by s.name
+order by sum_x desc
+Having s.name = 'Bodomzor'
+
+
+
+
+select * from stagging_table_iiko_payinout_types
+
+select * from stagging_quicklabels_iiko
+
+
+
+
+select * from stagging_table_iiko_assembly_charts
+drop table stagging_table_iiko_assembly_charts
+select * from stagging_table_iiko_couriers
+
+where date = '2022-02-07'
+
+where cast(halfHourDate as date) = '2025-07-29'
+select * from stagging_table_iiko_order_cycle
+ --korish kere hatolik bervoti kotta periutda
+select * from stagging_table_iiko_delivery_regions
+
+
+
+
+
+
+
+
+
+select * from staging_iiko_period_schedules
+
+
+
+
+
+
+
+
+
 
 select distinct name from stagging_table_iiko_products
 select * from stagging_table_iiko_stores

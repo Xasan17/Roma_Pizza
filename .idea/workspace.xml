@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="25a4a24a-4475-42c6-b79a-7d225b8268d2" name="Changes" comment="третий коммит">
+    <list default="true" id="25a4a24a-4475-42c6-b79a-7d225b8268d2" name="Changes" comment="Четвертый коммит">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SQL_scripts/SQLQuery1.sql" beforeDir="false" afterPath="$PROJECT_DIR$/SQL_scripts/SQLQuery1.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -153,7 +154,15 @@
       <option name="project" value="LOCAL" />
       <updated>1752742433825</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Четвертый коммит">
+      <option name="closed" value="true" />
+      <created>1753339739570</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1753339739570</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -183,6 +192,7 @@
     <MESSAGE value="Первый коммит" />
     <MESSAGE value="второй коммит" />
     <MESSAGE value="третий коммит" />
-    <option name="LAST_COMMIT_MESSAGE" value="третий коммит" />
+    <MESSAGE value="Четвертый коммит" />
+    <option name="LAST_COMMIT_MESSAGE" value="Четвертый коммит" />
   </component>
 </project>

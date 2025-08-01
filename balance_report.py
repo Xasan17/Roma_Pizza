@@ -4,81 +4,79 @@ import pandas as pd
 import pyodbc
 from datetime import datetime
 
+# 🔇 Отключить предупреждения SSL
 urllib3.disable_warnings()
 
 # 🔐 Токен
-token = "8063ebd3-dc30-1412-4660-aff906b8b6cd"
+def load_balance_stores(token,conn):
+    timestamp = datetime.now().isoformat(timespec='seconds')
+    today_date = datetime.now().date()
 
-# 📅 Текущая дата и время в ISO формате
-timestamp = datetime.now().isoformat(timespec='seconds')
+    # 📦 URL и параметры запроса
+    url = "https://roma-pizza-co.iiko.it/resto/api/v2/reports/balance/stores"
+    params = {
+        "key": token,
+        "timestamp": timestamp
+    }
 
-# 📦 URL и параметры запроса
-url = "https://roma-pizza-co.iiko.it/resto/api/v2/reports/balance/stores"
-params = {
-    "key": token,
-    "timestamp": timestamp
-}
+    # 📥 Запрос
+    response = requests.get(url, params=params, verify=False)
 
-# 📥 Запрос
-response = requests.get(url, params=params, verify=False)
+    if response.ok:
+        try:
+            # 📊 Преобразуем JSON в DataFrame
+            data = response.json()
+            df = pd.json_normalize(data, sep='_')
 
-# ✅ Обработка ответа
-if response.ok:
-    try:
-        # Преобразуем JSON в DataFrame
-        data = response.json()
-        df = pd.json_normalize(data, sep='_')
-        print(df.columns)
-        print("📊 Колонки с вложенными объектами:")
-        print(df.columns[df.columns.str.contains('parent|category|store|product')])
+            # 🧼 Добавим дату как колонку
+            df['timestamp'] = today_date
 
-        # 🔧 Подключение к SQL Server
-        conn = pyodbc.connect(
-            'Driver={ODBC Driver 17 for SQL Server};'
-            'SERVER=TA_GEO_07\\SQLEXPRESS;'
-            'DATABASE=Roma_pizza;'
-            'Trusted_Connection=yes;'
-        )
-        cursor = conn.cursor()
+            # 📍 Подключение к SQL Server
+            cursor = conn.cursor()
 
-        # 🧹 Удаляем таблицу, если есть
-        cursor.execute("""
-            IF OBJECT_ID('dbo.stagging_table_iiko_balance', 'U') IS NOT NULL
-                DROP TABLE dbo.stagging_table_iiko_balance
-        """)
-        conn.commit()
-
-        # 🏗️ Создаем таблицу заново
-        cursor.execute("""
-            CREATE TABLE dbo.stagging_table_iiko_balance (
-                productId UNIQUEIDENTIFIER,
-                storeId UNIQUEIDENTIFIER,
-                amount FLOAT,
-                sum FLOAT
-            )
-        """)
-        conn.commit()
-
-        # 💾 Вставка данных в таблицу
-        for _, row in df.iterrows():
+            # 📐 Создание таблицы, если не существует
             cursor.execute("""
-                INSERT INTO dbo.stagging_table_iiko_balance (
-                    productId, storeId, amount, sum
-                ) VALUES (?, ?, ?, ?)
-            """,
-                row.get("product"),
-                row.get("store"),
-                row.get("amount"),
-                row.get("sum")
-            )
+                IF OBJECT_ID('dbo.stagging_table_iiko_balance_stores', 'U') IS NULL
+                BEGIN
+                    CREATE TABLE dbo.stagging_table_iiko_balance_stores (
+                        productId UNIQUEIDENTIFIER,
+                        storeId UNIQUEIDENTIFIER,
+                        amount FLOAT,
+                        sum FLOAT,
+                        timestamp DATE
+                    )
+                END
+            """)
+            conn.commit()
 
-        conn.commit()
-        cursor.close()
-        conn.close()
-        print("✅ Остатки успешно загружены в SQL Server")
+            # 🧹 Удалить записи только за сегодня
+            cursor.execute("""
+                DELETE FROM dbo.stagging_table_iiko_balance_stores
+                WHERE timestamp = ?
+            """, today_date)
+            conn.commit()
 
-    except Exception as e:
-        print("❌ Ошибка при обработке данных:", e)
+            # 💾 Вставка новых записей
+            for _, row in df.iterrows():
+                cursor.execute("""
+                    INSERT INTO dbo.stagging_table_iiko_balance_stores (
+                        productId, storeId, amount, sum, timestamp
+                    ) VALUES (?, ?, ?, ?, ?)
+                """,
+                    row.get("product"),
+                    row.get("store"),
+                    row.get("amount"),
+                    row.get("sum"),
+                    row.get("timestamp")
+                )
 
-else:
-    print(f"[!] Ошибка {response.status_code}: {response.text}")
+            conn.commit()
+            cursor.close()
+
+            print(f"✅ Загружено {len(df)} записей за {today_date}")
+
+        except Exception as e:
+            print("❌ Ошибка при обработке данных:", e)
+
+    else:
+        print(f"[!] Ошибка {response.status_code}: {response.text}")

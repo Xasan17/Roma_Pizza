@@ -1,11 +1,10 @@
 import requests
 import urllib3
 import pandas as pd
-import pyodbc
 
 # 🔕 Отключаем предупреждения SSL
 urllib3.disable_warnings()
-def load_accaunts(token):
+def load_accaunts(token,conn):
     url = "https://roma-pizza-co.iiko.it/resto/api/v2/entities/accounts/list"
     params = {
         "key": token,
@@ -21,13 +20,6 @@ def load_accaunts(token):
         # 📊 Преобразование в DataFrame
         df = pd.DataFrame(data)
 
-        # 🔌 Подключение к SQL Server
-        conn = pyodbc.connect(
-            'Driver={ODBC Driver 17 for SQL Server};'
-            'SERVER=TA_GEO_07\\SQLEXPRESS;'
-            'DATABASE=Roma_pizza;'
-            'Trusted_Connection=yes;'
-        )
         cursor = conn.cursor()
 
         # 🧹 Удаление старой таблицы, если она есть
@@ -74,7 +66,6 @@ def load_accaunts(token):
 
         conn.commit()
         cursor.close()
-        conn.close()
         print("✅ Данные Accounts успешно загружены в SQL Server!")
 
     else:
